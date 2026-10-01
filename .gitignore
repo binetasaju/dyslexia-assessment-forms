@@ -1,0 +1,19 @@
+# Secrets – never commit
+backend/.env
+.env
+
+# Child research data – never commit
+research_data/*
+!research_data/.gitkeep
+
+# Python
+venv/
+backend/venv/
+__pycache__/
+*.pyc
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
