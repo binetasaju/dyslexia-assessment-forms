@@ -584,13 +584,20 @@ function getAgeGroup(age) {
   return null;
 }
 
-/* Returns the content object ({handwriting, reading, ...}) for a session + age. */
-function getSessionContent(session, age) {
-  const group = getAgeGroup(age);
+const AGE_GROUP_LABELS = {
+  "5-7": "Ages 5–7",
+  "8-10": "Ages 8–10",
+  "11-13": "Ages 11–13",
+  "14-15": "Ages 14–15",
+};
+
+/* Returns the content object ({handwriting, reading, ...}) for a session + age level
+   (age group chosen by the assessor, e.g. "8-10"). */
+function getSessionContent(session, group) {
   return (assessmentData[group] && assessmentData[group][session]) || {};
 }
 
 if (typeof module !== "undefined") {
-  module.exports = { assessmentData, STEP_DEFS, AGE_GROUPS, SESSIONS, SCRIPTS, PROTOCOL_VERSION,
+  module.exports = { assessmentData, STEP_DEFS, AGE_GROUPS, AGE_GROUP_LABELS, SESSIONS, SCRIPTS, PROTOCOL_VERSION,
     RAN_GRID_SOURCE, RAN_EMOJI, RAN_COLOURS, getAgeGroup, getSessionContent };
 }

@@ -115,6 +115,13 @@ function renderChildForm(prefill = {}) {
             </select>
           </label>
           <label class="field">
+            <span>Test Age Level <span class="req">*</span></span>
+            <select id="age_group">
+              <option value="">Select level</option>
+              ${AGE_GROUPS.map((g) => `<option value="${g}" ${prefill.age_group === g ? "selected" : ""}>${AGE_GROUP_LABELS[g]}</option>`).join("")}
+            </select>
+          </label>
+          <label class="field">
             <span>Grade</span>
             <input type="text" id="grade" maxlength="20" placeholder="e.g. 3" autocomplete="off" value="${esc(prefill.grade || "")}" />
           </label>
@@ -202,6 +209,7 @@ function startAssessment() {
   const errEl = document.getElementById("form-error");
   const childId = document.getElementById("child_id").value.trim().toUpperCase();
   const age = document.getElementById("age").value;
+  const ageGroup = document.getElementById("age_group").value;
   const grade = document.getElementById("grade").value.trim();
   const assessmentDate = document.getElementById("assessment_date").value;
   const gender = document.querySelector("input[name=gender]:checked")?.value;
@@ -213,6 +221,7 @@ function startAssessment() {
   else if (!CHILD_ID_PATTERN.test(childId))
     error = "Child ID can only contain letters, numbers, '-' or '_' (2–30 characters), e.g. CH001.";
   else if (!age) error = "Please select the child's age.";
+  else if (!ageGroup) error = "Please select the test age level.";
   else if (!/^\d{4}-\d{2}-\d{2}$/.test(assessmentDate)) error = "Please enter the assessment date.";
   else if (!gender) error = "Please select the child's gender.";
   else if (!category) error = "Please select a category.";
@@ -222,10 +231,10 @@ function startAssessment() {
     return;
   }
 
-  const content = getSessionContent(session, age);
+  const content = getSessionContent(session, ageGroup);
   state = {
-    child: { child_id: childId, age: Number(age), grade, assessment_date: assessmentDate, gender, category, session },
-    ageGroup: getAgeGroup(age),
+    child: { child_id: childId, age: Number(age), age_group: ageGroup, grade, assessment_date: assessmentDate, gender, category, session },
+    ageGroup,
     content,
     startedAt: new Date(),
     hw: {},        // handwriting timers + status
@@ -305,6 +314,7 @@ function renderHeaderInfo() {
   headerInfoEl.innerHTML = `
     <span><strong>Child ID:</strong> ${esc(c.child_id)}</span>
     <span><strong>Age:</strong> ${c.age}</span>
+    <span><strong>Test level:</strong> ${esc(AGE_GROUP_LABELS[c.age_group])}</span>
     <span><strong>Session:</strong> ${SESSION_LABELS[c.session]}</span>`;
 }
 
@@ -834,6 +844,7 @@ function renderReview(el) {
       <table class="info-table">
         <tr><th>Child ID</th><td>${esc(c.child_id)}</td></tr>
         <tr><th>Age</th><td>${c.age}</td></tr>
+        <tr><th>Test Age Level</th><td>${esc(AGE_GROUP_LABELS[c.age_group])}</td></tr>
         <tr><th>Gender</th><td>${esc(c.gender)}</td></tr>
         <tr><th>Grade</th><td>${esc(c.grade || "–")}</td></tr>
         <tr><th>Category</th><td>${esc(c.category)} <span class="muted">(research classification entered by the assessor)</span></td></tr>
