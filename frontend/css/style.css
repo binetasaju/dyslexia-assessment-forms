@@ -282,3 +282,138 @@ input[type=date], input[type=number] {
   .step-layout { grid-template-columns: 1fr; gap: 12px; }
   .assessor-box { position: static; max-height: none; }
 }
+
+/* =====================================================================
+   Kid-friendly theme (colours, rounded font, playful chrome).
+   Test stimuli (passages, RAN grids, digit sequences, child cards) keep
+   their plain font and white backgrounds so the material itself is unchanged.
+   ===================================================================== */
+:root {
+  --bg: #eaf6ff;
+  --text: #24304a;
+  --muted: #5d6b86;
+  --border: #cfe0f2;
+  --primary: #3b82f6;
+  --primary-dark: #2563eb;
+  --sun: #ffc93c;
+  --coral: #ff7a7a;
+  --mint: #34c38f;
+  --grape: #a77bf3;
+  --radius: 22px;
+  --stimulus-font: "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+body {
+  font-family: "Nunito", "Trebuchet MS", "Segoe UI", Roboto, Arial, sans-serif;
+  background: linear-gradient(180deg, #d9efff 0%, #f2f9ff 45%, #fff8e8 100%) fixed;
+  min-height: 100vh;
+}
+h1, h2, h3 { font-weight: 900; color: #1e3a8a; }
+h4 { color: var(--grape); }
+
+/* floating decorations behind everything */
+.sky { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.sky span { position: absolute; font-size: 3.5rem; opacity: .35; animation: float 9s ease-in-out infinite; }
+.sky span:nth-child(1) { top: 12%; left: 4%; font-size: 5rem; }
+.sky span:nth-child(2) { top: 30%; right: 6%; animation-delay: -2s; }
+.sky span:nth-child(3) { bottom: 18%; right: 3%; font-size: 6rem; animation-delay: -4s; }
+.sky span:nth-child(4) { bottom: 8%; left: 3%; animation-delay: -6s; }
+.sky span:nth-child(5) { top: 62%; left: 8%; font-size: 2.2rem; animation-delay: -3s; }
+@keyframes float { 50% { transform: translateY(-14px) rotate(4deg); } }
+.topbar, .container, .footer { position: relative; z-index: 1; }
+.topbar { position: sticky; z-index: 10; }
+
+/* header */
+.topbar {
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6 60%, #ec4899);
+  box-shadow: 0 4px 14px #3b82f633;
+}
+.brand { font-weight: 900; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; }
+.brand-icon { font-size: 1.6rem; }
+.brand .muted { color: #e9e3ff; }
+.header-info span { background: #ffffff26; padding: 3px 12px; border-radius: 999px; }
+
+/* cards */
+.card {
+  border: 0;
+  box-shadow: 0 8px 24px #3b82f61a, 0 2px 4px #0000000d;
+  border-top: 6px solid var(--sun);
+}
+.hero-icon { font-size: 2.6rem; text-align: center; margin-bottom: 4px; }
+.card > h1 { text-align: center; }
+.card > h1 + .muted { text-align: center; }
+
+/* form controls */
+input[type=text], input[type=date], input[type=number], select, textarea {
+  border: 2px solid var(--border); border-radius: 14px;
+}
+input[type=text]:focus, input[type=date]:focus, select:focus, textarea:focus { outline: 4px solid #bfdbfe; }
+.choice { border: 2px solid var(--border); border-radius: 999px; padding: 10px 18px; transition: border-color .12s, background .12s; }
+.choice:hover { border-color: var(--primary); }
+:where(.choice):has(input:checked) { background: #e0edff; border-color: var(--primary); }
+.choice input, .option input { accent-color: var(--primary); }
+
+/* chunky buttons – solid colours when usable, flat grey when disabled.
+   No movement on hover/press, so a click near the edge is never lost. */
+.btn {
+  border-radius: 999px; font-weight: 800; padding: 10px 22px; opacity: 1;
+  border: 2px solid transparent;
+  box-shadow: 0 3px 0 #0000002e; transition: background .12s, box-shadow .12s, filter .12s;
+}
+.btn:hover:not(:disabled) { filter: brightness(1.07); }
+.btn:active:not(:disabled) { box-shadow: inset 0 3px 6px #00000033; filter: brightness(.95); }
+.btn:focus-visible { outline: 4px solid #93c5fd; outline-offset: 2px; }
+.btn-primary { background: #2563eb; color: #fff; }
+.btn-primary:hover:not(:disabled) { background: #1d4ed8; }
+.btn-secondary { background: #fff; color: #1d4ed8; border-color: #93b8f5; }
+.btn-secondary:hover:not(:disabled) { background: #eef4ff; }
+.btn-go { background: #16a34a; color: #fff; }
+.btn-rec { background: #dc2626; color: #fff; }
+.btn-stop { background: #334155; color: #fff; }
+.btn-ok { background: var(--ok-bg); color: var(--ok); border-color: #8fd0a2; }
+.btn-skip { background: #fff; color: var(--muted); border-color: var(--border); }
+.btn:disabled, .btn:disabled:hover {
+  background: #eceff3; color: #a3abb8; border-color: #e1e5eb; border-style: dashed;
+  box-shadow: none; filter: none; opacity: 1; cursor: not-allowed;
+}
+.btn-large { padding: 16px 36px; font-size: 1.2rem; }
+#child-form > .btn-large { display: block; margin: 8px auto 0; }
+
+/* progress: rainbow bar + stars */
+.progress { background: #fff; border-radius: 18px; padding: 12px 16px; box-shadow: 0 4px 14px #3b82f614; }
+.progress-text { font-size: 1.05rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.step-icon { font-size: 1.6rem; }
+.progress-bar { height: 14px; border-radius: 999px; background: #e5eefb; }
+.progress-bar > div {
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ff7a7a, #ffc93c, #34c38f, #3b82f6, #a77bf3);
+}
+.progress-stars { display: flex; gap: 4px; margin-top: 6px; font-size: 1.1rem; color: #d6deea; }
+.progress-stars .lit { color: var(--sun); text-shadow: 0 1px 0 #d99a00; }
+
+/* misc softening */
+.note { border-left-color: var(--grape); background: #f5f0ff; border-radius: 10px; }
+.rec, .option, .text-box, .child-text-box, .reading-passage, .ran-grid { border-radius: 16px; }
+.rec.st-done { border-width: 2px; }
+.option.selected { background: #eef4ff; }
+.timer { border-radius: 999px; }
+.assessor-box { border-radius: 16px; }
+
+/* success page */
+.celebrate { font-size: 3rem; animation: bounce 1.2s ease-in-out infinite; }
+@keyframes bounce { 50% { transform: translateY(-10px); } }
+.big-check { background: var(--mint); color: #fff; box-shadow: 0 6px 0 #22a374; }
+
+/* keep test stimuli plain and unchanged */
+.passage, .reading-passage, .child-text, .child-card-text, .ran-grid, .sequence, .q-prompt {
+  font-family: var(--stimulus-font);
+}
+.child-card { z-index: 200; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sky span, .celebrate { animation: none; }
+  .btn, .choice { transition: none; }
+}
+@media (max-width: 600px) {
+  .sky { display: none; }
+}
