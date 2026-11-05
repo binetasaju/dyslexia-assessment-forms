@@ -97,6 +97,7 @@ function renderChildForm(prefill = {}) {
   const ages = Array.from({ length: 11 }, (_, i) => i + 5);
   appEl.innerHTML = `
     <div class="card">
+      <div class="hero-icon" aria-hidden="true">🦉📚✨</div>
       <h1>Child Assessment</h1>
       <p class="muted">Fill in the details below and press <strong>Start Assessment</strong>.</p>
       <form id="child-form" novalidate>
@@ -318,6 +319,11 @@ function renderHeaderInfo() {
     <span><strong>Session:</strong> ${SESSION_LABELS[c.session]}</span>`;
 }
 
+const STEP_ICONS = {
+  hw_copying: "✏️", hw_dictation: "📝", reading: "📖", phonological: "👂",
+  grapheme_phoneme: "🔤", ran: "⚡", memory: "🧠", review: "🏁",
+};
+
 function renderStep() {
   showBanner(null);
   renderHeaderInfo();
@@ -341,8 +347,11 @@ function renderStep() {
       <aside id="step-aside" class="assessor-box"></aside>
       <div class="step-main">
         <div class="progress">
-          <div class="progress-text">Step ${n} of ${total} – <strong>${esc(step.title)}</strong></div>
+          <div class="progress-text"><span class="step-icon" aria-hidden="true">${STEP_ICONS[step.type] || "⭐"}</span>
+            Step ${n} of ${total} – <strong>${esc(step.title)}</strong></div>
           <div class="progress-bar"><div style="width:${(n / total) * 100}%"></div></div>
+          <div class="progress-stars" aria-hidden="true">${state.steps.map((_, i) =>
+            `<span class="${i < n ? "lit" : ""}">★</span>`).join("")}</div>
         </div>
         <div id="step-body"></div>
         <div class="nav">
@@ -1046,8 +1055,9 @@ function renderSuccess(result, meta) {
   headerInfoEl.innerHTML = "";
   appEl.innerHTML = `
     <div class="card success">
+      <div class="celebrate" aria-hidden="true">🎉 🌟 🎈</div>
       <div class="big-check">✓</div>
-      <h2>Assessment submitted successfully.</h2>
+      <h2>Great job! Assessment submitted successfully.</h2>
       <table class="info-table">
         <tr><th>Child ID</th><td>${esc(result.child_id)}</td></tr>
         <tr><th>Session</th><td>${esc(result.session)}</td></tr>
